@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://anonytalk.vercel.app",
-    title: "AlexanderAnonytalk: Chatea anonimamente :)",
+    title: "Anonytalk: Chatea anonimamente :)",
     siteName: "Anonytalk: Chatea anonimamente :)",
     description: "Chatea anonimamente en grupo en anonytalk.",
     images: "/img/og_image.png",

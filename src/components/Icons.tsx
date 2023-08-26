@@ -79,8 +79,8 @@ export const ImageFile = () => {
 
 export const AlexDev = () => {
   return(
-    <svg width="16" height="16" viewBox="0 0 161.9 151.31" className="fill-[#3700ff] dark:fill-white">
-      <title>Desarrollador Web</title>
+    <svg width="16" height="16" viewBox="0 0 161.9 151.31" fill="currentColor">
+      <title>Portfolio</title>
       <g>
         <polygon points="161.9 151.31 104.84 0 102.17 0 59.05 0 56.38 0 0 151.31 45.79 151.31 80.74 57.52 116.11 151.31 161.9 151.31" />
         <polygon points="102.17 0 56.38 0 0 151.31 45.79 151.31 102.17 0" />
