@@ -13,13 +13,13 @@ html,body, main{
 }
 
 .anonytalk{
-  background-image: linear-gradient(150deg, #29b0ff 15%, #27dae0 50%, #27e099 99%);
+  background-image: linear-gradient(150deg, #29b0ff 15%, #1bcbd1 50%, #75fac8 99%);
   background-size: 200% 200%;
   animation: anonytalk 4s infinite;
 }
 
 .dark .anonytalk{
-  background-image: linear-gradient(150deg, #4db3ee 15%, #00e086 50%, #13ae73 99%);
+  background-image: linear-gradient(150deg, #4db3ee 15%, #53d1a0 50%, #119864 99%);
 }
 
 @keyframes anonytalk {
@@ -87,5 +87,5 @@ html,body, main{
 
 *::-webkit-scrollbar-thumb{
   border-radius: .5rem;
-  background-color: #00EAAF;
+  background-color: #75fac8;
 }

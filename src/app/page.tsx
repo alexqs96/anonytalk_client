@@ -65,10 +65,10 @@ export default function Home() {
 
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col w-full p-7 rounded-2xl shadow-xl bg-white dark:bg-slate-800 text-lg sm:text-2xl border border-black/[2%] dark:border-white/5"
+              className="flex flex-col w-full p-8 rounded-2xl shadow-xl bg-white dark:bg-slate-800 text-lg sm:text-2xl border border-black/[2%] dark:border-white/5"
             >
               <label
-                className="opacity-75 text-xl mb-0.5 indent-1"
+                className="opacity-75 text-xl indent-1"
                 htmlFor="nick"
               >
                 Nick
@@ -78,15 +78,15 @@ export default function Home() {
                 id="nick"
                 type="text"
                 name="nick"
-                placeholder="UserX"
-                className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#27e099] dark:focus-within:border-[#27e099] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
+                placeholder="John"
+                className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#75fac8] dark:focus-within:border-[#75fac8] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
                 onKeyDown={(e) => {
                   e.key === "Enter" && focusNextInput();
                 }}
               />
 
               <label
-                className="opacity-75 text-xl mb-0.5 indent-1"
+                className="opacity-75 text-xl indent-1"
                 htmlFor="room"
               >
                 Sala
@@ -96,15 +96,15 @@ export default function Home() {
                 id="room"
                 type="text"
                 name="room"
-                placeholder="global"
-                className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#27e099] dark:focus-within:border-[#27e099] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
+                placeholder="Global"
+                className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#75fac8] dark:focus-within:border-[#75fac8] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
                 onKeyDown={(e) => {
                   e.key === "Enter" && focusNextInput();
                 }}
               />
 
               <button
-                className="anonytalk shadow text-white dark:text-white/90 text-xl rounded-lg w-fit p-2 px-4 pressable font-medium "
+                className="anonytalk shadow-lg text-white dark:text-white/90 text-xl rounded-lg w-fit p-2 px-4 pressable font-medium"
                 type="submit"
               >
                 Ingresar

@@ -113,7 +113,7 @@ const Message = ({
           <button
             type="button"
             onClick={leaveRoom}
-            className="border dark:border-white/30 dark:bg-slate-800 px-4 py-1 rounded"
+            className="border dark:border-white/30 dark:bg-slate-800 px-4 py-1 rounded pressable"
           >
             Salir
           </button>
@@ -160,7 +160,7 @@ const Message = ({
                     (userMessage.author === ""
                       ? "bg-black dark:bg-slate-700 text-white mx-auto"
                       : socket.id === userMessage.id
-                      ? "bg-[#27e099] dark:bg-[#00c076] text-white rounded-bl-none"
+                      ? "bg-[#33d396] dark:bg-[#00c076] text-white rounded-bl-none"
                       : socket.id !== userMessage.id
                       ? "bg-[#2889ff] text-white rounded-br-none ml-auto"
                       : "bg-[#2889ff] text-white rounded-br-none ml-auto")
@@ -221,10 +221,10 @@ const Message = ({
           </>
         ) : null}
       </section>
-      <section className="flex dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-[#27e099] dark:focus-within:border-[#27e099] rounded-lg max-w-[94%] sm:max-w-[98%] w-full mx-auto mb-3">
+      <section className="flex dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/30 dark:focus-within:border-white/30 rounded-lg max-w-[94%] sm:max-w-[98%] w-full mx-auto mb-3">
         <label
           htmlFor="file"
-          className="flex items-center bg-white dark:bg-slate-800 px-3 cursor-pointer"
+          className="flex items-center bg-white dark:bg-slate-800 px-3 md:px-5 cursor-pointer"
         >
           <ImageFile />
           <input
@@ -246,7 +246,7 @@ const Message = ({
             e.key === "Enter" && !e.shiftKey && sendMessage(e);
           }}
         />
-        <button className="text-white px-3 bg-[#27e099]" onClick={sendMessage}>
+        <button className="text-white px-3 md:px-5 anonytalk md:text-lg" onClick={sendMessage}>
           Enviar
         </button>
       </section>
