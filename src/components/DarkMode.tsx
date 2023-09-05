@@ -1,7 +1,6 @@
 "use client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { AlexDev, GithubLogo, LinkedinLogo } from "./Icons";
 
 export const DarkMode = () => {
   const { setTheme } = useTheme();
@@ -16,7 +15,6 @@ export const DarkMode = () => {
   }
 
   return (
-    <div className="flex gap-4 flex-wrap justify-center sm:mr-auto">
     <div className="flex items-center w-fit gap-1.5 reveal border border-black/5 bg-white shadow dark:bg-slate-700 dark:border-white/5 py-2 px-3 rounded-xl">
       <button
         onClick={() => setTheme("light")}
@@ -80,35 +78,6 @@ export const DarkMode = () => {
           <path d="M8 21h8M12 17v4"></path>
         </svg>
       </button>
-    </div>
-    <div className="flex items-center w-fit gap-1.5 reveal border border-black/5 bg-white shadow dark:bg-slate-700 dark:border-white/5 py-2 px-3 rounded-xl">
-      <a
-        href="https://github.com/alexqs96"
-        target="_blank"
-        rel="noreferrer noopener"
-        title="Github"
-      >
-        <GithubLogo />
-      </a>
-
-      <a
-        href="https://www.linkedin.com/in/alexander-mamani"
-        target="_blank"
-        rel="noreferrer noopener"
-        title="Linkedin"
-      >
-        <LinkedinLogo />
-      </a>
-
-      <a
-        href="https://alexdev.com.ar"
-        target="_blank"
-        rel="noreferrer noopener"
-        title="Portfolio"
-      >
-        <AlexDev />
-      </a>
-    </div>
     </div>
   );
 };

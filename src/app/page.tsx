@@ -4,6 +4,8 @@ import * as io from "socket.io-client";
 import Message from "@/components/Message";
 import { Anonytalk } from "@/components/Icons";
 import { DarkMode } from "@/components/DarkMode";
+import Social from "@/components/Social";
+import { generateNickColor } from "@/lib/utils";
 
 const socket = io.connect(process.env.NEXT_PUBLIC_SERVER_URL as string, {
   reconnection: true,
@@ -15,6 +17,7 @@ export default function Home() {
   const nickRef = useRef<HTMLInputElement>(null);
   const roomRef = useRef<HTMLInputElement>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [color, setColor] = useState<string>(generateNickColor());
 
   const focusNextInput = () => {
     const active = document.activeElement;
@@ -68,10 +71,26 @@ export default function Home() {
               className="flex flex-col w-full p-8 rounded-2xl shadow-xl bg-white dark:bg-slate-800 text-lg sm:text-2xl border border-black/[2%] dark:border-white/5"
             >
               <label
-                className="opacity-75 text-xl indent-1"
+                className="opacity-75 text-xl indent-1 flex items-center gap-2"
                 htmlFor="nick"
               >
                 Nick
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.querySelector<HTMLInputElement>("#color")?.click()
+                  }
+                  className="text-[.6em] -tracking-wider flex items-center gap-1"
+                >
+                  ( cambiar color )
+                  <input
+                    defaultValue={color}
+                    onChange={(e) => setColor(e.target.value)}
+                    id="color"
+                    type="color"
+                    className="h-3 w-3 rounded-full overflow-hidden cursor-pointer border"
+                  />
+                </button>
               </label>
               <input
                 ref={nickRef}
@@ -79,16 +98,17 @@ export default function Home() {
                 type="text"
                 name="nick"
                 placeholder="John"
-                className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#75fac8] dark:focus-within:border-[#75fac8] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
+                className="w-full border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#75fac8] dark:focus-within:border-[#75fac8] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
+                onBlur={(e) =>
+                  e?.target?.value !== ""
+                    ? e.target.classList.remove("border-red-500")
+                    : null
+                }
                 onKeyDown={(e) => {
                   e.key === "Enter" && focusNextInput();
                 }}
               />
-
-              <label
-                className="opacity-75 text-xl indent-1"
-                htmlFor="room"
-              >
+              <label className="opacity-75 text-xl indent-1" htmlFor="room">
                 Sala
               </label>
               <input
@@ -98,19 +118,27 @@ export default function Home() {
                 name="room"
                 placeholder="Global"
                 className="border rounded-lg p-2 indent-1 mb-4 focus-within:border-[#75fac8] dark:focus-within:border-[#75fac8] dark:bg-white/10 dark:border-white/5 outline-none transition-colors duration-200 shadow"
+                onBlur={(e) =>
+                  e?.target?.value !== ""
+                    ? e.target.classList.remove("border-red-500")
+                    : null
+                }
                 onKeyDown={(e) => {
                   e.key === "Enter" && focusNextInput();
                 }}
               />
 
               <button
-                className="anonytalk shadow-lg text-white dark:text-white/90 text-xl rounded-lg w-fit p-2 px-4 pressable font-medium"
+                className="anonytalk text-shadow shadow-lg text-white dark:text-white/90 text-xl rounded-lg w-fit p-2 px-4 pressable font-medium"
                 type="submit"
               >
                 Ingresar
               </button>
             </form>
-            <DarkMode />
+            <div className="flex gap-4 flex-wrap justify-center sm:mr-auto reveal">
+              <DarkMode />
+              <Social />
+            </div>
           </div>
 
           <div className="max-w-[35%] sm:max-w-[50%] xl:w-full flex h-fit items-center max-sm:-mb-5">
@@ -122,6 +150,7 @@ export default function Home() {
           socket={socket}
           nick={nickRef.current?.value as string}
           room={roomRef.current?.value as string}
+          color={color}
         />
       )}
     </>

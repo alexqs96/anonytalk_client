@@ -12,6 +12,22 @@ html,body, main{
   height: 100%;
 }
 
+input[type=color]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+input[type=color]::-webkit-color-swatch-wrapper {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.text-shadow {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
 .anonytalk{
   background-image: linear-gradient(150deg, #29b0ff 15%, #1bcbd1 50%, #75fac8 99%);
   background-size: 200% 200%;

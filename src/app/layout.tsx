@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={varela.className + " bg-white dark:bg-slate-900"}>
+      <body className={varela.className + " bg-white dark:bg-slate-900 max-w-screen-2xl mx-auto"}>
         <DarkModeProvider>
         <main>
         {children}

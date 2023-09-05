@@ -2,15 +2,17 @@
 import { useState, useEffect, useRef, FormEvent, Children } from "react";
 import Linkify from "react-linkify";
 import { Socket } from "socket.io-client";
-import { Anonytalk, ImageFile } from "./Icons";
+import { Anonytalk, FileIcon, MembersIcon, SendIcon } from "./Icons";
 import Image from "next/image";
-import { getImageFile } from "@/lib/utils";
+import { generateUniqueCode, getFile } from "@/lib/utils";
+import { DarkMode } from "./DarkMode";
 
 interface MessageInterface {
   id: string;
   room: string;
   images: string[];
   author: string;
+  color: string;
   message: string;
   time: string;
 }
@@ -19,10 +21,12 @@ const Message = ({
   socket,
   nick,
   room,
+  color,
 }: {
   socket: Socket;
   nick: string;
   room: string;
+  color: string;
 }) => {
   const [roomClients, setRoomClients] = useState<number>(0);
   const [images, setImages] = useState<string[]>([]);
@@ -35,7 +39,7 @@ const Message = ({
     if (e) {
       const bucket = [];
       for (let i = 0; i < e.length; i++) {
-        bucket.push((await getImageFile(e[i])) as string);
+        bucket.push((await getFile(e[i])) as string);
       }
 
       setImages([...images, ...bucket]);
@@ -52,17 +56,18 @@ const Message = ({
   //Sends a Message with the current user data and time to the socket and set the message into the message list box
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
-    if (!messageRef?.current?.value) {
+    if (!messageRef?.current?.value && !images.length) {
       return null;
     }
 
-    if (messageRef.current.value && nick && room) {
+    if (nick && room) {
       const messageData: MessageInterface = {
         id: socket.id,
         room: room,
         images,
         author: nick,
-        message: messageRef?.current?.value,
+        color,
+        message: messageRef?.current?.value || "",
         time: new Date().toLocaleTimeString("es-ES", {
           hour: "numeric",
           minute: "numeric",
@@ -72,7 +77,7 @@ const Message = ({
       socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
       setImages([]);
-      messageRef.current.value = "";
+      messageRef?.current?.value? messageRef.current.value = "" : null
     } else {
       location.reload();
     }
@@ -82,6 +87,13 @@ const Message = ({
     socket.emit("leave_room", { nick, room });
     location.reload();
   };
+
+  const openFileTab = (data64file: string) => {
+    const newTab = window.open();
+    newTab?.document.write(
+        `<!DOCTYPE html><head><title>Anonytalk Documento</title></head><body><iframe style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" src="${data64file}"></body></html>`);
+    newTab?.document.close();
+  }
 
   //Scroll to bottom every time someone sends a message
   useEffect(() => {
@@ -103,17 +115,24 @@ const Message = ({
 
   return (
     <section className="flex flex-col h-full reveal">
-      <nav className="flex items-center justify-between bg-gradient-to-b from-white to-transparent dark:bg-gradient-to-b dark:from-slate-800 dark:to-transparent py-2 px-[3%] sm:px-[1%] blurify">
+      <nav className="max-w-[99%] mx-auto w-full flex items-center justify-between border border-black/5 dark:border-transparent bg-gradient-to-b from-white to-transparent dark:bg-gradient-to-b dark:from-slate-800 dark:to-transparent py-2 lg:py-3 px-[3%] sm:px-[1.25%] blurify lg:rounded-3xl lg:mt-2 overflow-hidden">
         <a href="/" onClick={leaveRoom}>
-          <Anonytalk size={64} styles={null} />
+          <Anonytalk size={56} styles={null} />
         </a>
 
-        <div className="flex gap-3 items-center">
-          <p>Clientes: {roomClients}</p>|
+        <div className="flex gap-2 items-center max-sm:text-sm">
+          <div className="flex items-center gap-2 py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl border border-black/5 dark:border-white/5">
+          <p>Sala: {room}</p>
+          |
+          <p className="flex items-center gap-1"><MembersIcon />: {roomClients}</p>
+          </div>
+          <div className="max-md:hidden">
+            <DarkMode />
+          </div>
           <button
             type="button"
             onClick={leaveRoom}
-            className="border dark:border-white/30 dark:bg-slate-800 px-4 py-1 rounded pressable"
+            className="py-1.5 px-3 bg-red-500 text-white shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
           >
             Salir
           </button>
@@ -131,73 +150,102 @@ const Message = ({
                 {userMessage.images.length > 0 ? (
                   <div
                     className={
-                      "flex items-center gap-2 flex-col -mb-1 " +
-                      (socket.id !== userMessage.id ? "ml-auto" : "mr-auto")
+                      "flex gap-5 flex-col -mb-1 " +
+                      (socket.id !== userMessage.id ? "ml-auto items-end" : "mr-auto items-start")
                     }
                   >
-                    {userMessage.images.map((image: string, index: number) => (
-                      <a href={image} target="_blank">
-                      <Image
-                        key={index}
-                        width={200}
-                        height={200}
-                        className={
-                          "object-contain w-auto h-auto max-w-[100px] max-h-[100px] rounded-lg block mb-1 " +
-                          (socket.id !== userMessage.id
-                            ? "ml-auto rounded-br-none"
-                            : "mr-auto rounded-bl-none")
-                        }
-                        src={image}
-                        alt="anonymous image"
-                        unoptimized
-                        priority
-                      />
-                      </a>
-                    ))}
+                    {
+                      Children.toArray(
+                      userMessage.images.map((image: string) => (
+                      <div className="flex flex-col gap-2">
+                      <p style={{backgroundColor: userMessage.color}} className={"w-fit py-0.5 px-2 rounded-xl text-shadow -mb-1 "+(socket.id === userMessage.id
+                        ? " text-white mr-auto"
+                        : " text-white ml-auto")}>@{userMessage.author} ~ <small>{userMessage.time}</small></p>
+                      {
+                        image.startsWith("data:image")?
+                        <Image
+                          onClick={() => openFileTab(image)}
+                          width={200}
+                          height={200}
+                          className={
+                            "object-contain cursor-pointer w-full h-full max-w-[128px] md:max-w-[256px] max-h-[128px] md:max-h-[256px] rounded-lg block mb-1 " +
+                            (socket.id !== userMessage.id
+                              ? "ml-auto rounded-br-none"
+                              : "mr-auto rounded-bl-none")
+                          }
+                          src={image}
+                          alt="anonymous image"
+                          unoptimized
+                          priority
+                        />
+                        :
+                        image.startsWith("data:application/pdf")?
+                        <div className="flex items-center gap-2">
+                        <p
+                          className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-md text-white"
+                          onClick={() => openFileTab(image)}
+                        >Ver PDF de @{userMessage.author}</p>
+                        <a href={image} className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white" download={userMessage.author+ "_archivo_"+generateUniqueCode()}>
+                          Descargar PDF
+                        </a>
+                        </div>
+                        :
+                        <a href={image} className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white" download={userMessage.author+ "_archivo_"+generateUniqueCode()}>
+                          Descargar Archivo de @{userMessage.author}
+                        </a>
+                      }
+                      </div>
+                    )))}
                   </div>
                 ) : null}
-                <div
-                  className={
-                    "w-fit py-2 px-3 rounded-2xl " +
-                    (userMessage.author === ""
-                      ? "bg-black dark:bg-slate-700 text-white mx-auto"
-                      : socket.id === userMessage.id
-                      ? "bg-[#33d396] dark:bg-[#00c076] text-white rounded-bl-none"
-                      : socket.id !== userMessage.id
-                      ? "bg-[#2889ff] text-white rounded-br-none ml-auto"
-                      : "bg-[#2889ff] text-white rounded-br-none ml-auto")
-                  }
-                >
-                  <Linkify
-                    componentDecorator={(decoratedHref, decoratedText, key) => (
-                      <a
-                        target="blank"
-                        rel="noreferrer noopener"
-                        href={decoratedHref}
-                        key={key}
-                        className="font-medium underline"
-                      >
-                        {decoratedText}
-                      </a>
-                    )}
+                {
+                  userMessage.message?
+                  <div
+                    style={{backgroundColor: userMessage.color}}
+                    className={
+                      "w-fit py-2 px-3.5 rounded-2xl text-shadow " +
+                      (userMessage.author === ""
+                        ? " text-white mx-auto"
+                        : socket.id === userMessage.id
+                        ? " text-white rounded-bl-none "
+                        : socket.id !== userMessage.id
+                        ? " text-white rounded-br-none ml-auto"
+                        : " text-white rounded-br-none ml-auto")
+                    }
                   >
-                    <small>
-                      {userMessage.author === ""
-                        ? ""
-                        : "@" + userMessage.author}
-                    </small>
-                    <p>{userMessage.message}</p>
-                    <small className="ml-auto w-fit block">
-                      {userMessage.time}
-                    </small>
-                  </Linkify>
-                </div>
+                    <Linkify
+                      componentDecorator={(decoratedHref, decoratedText, key) => (
+                        <a
+                          target="blank"
+                          rel="noreferrer noopener"
+                          href={decoratedHref}
+                          key={key}
+                          className="font-medium underline"
+                        >
+                          {decoratedText}
+                        </a>
+                      )}
+                    >
+                      <small className="-mb-0.5 block">
+                        {userMessage.author === ""
+                          ? ""
+                          : "@" + userMessage.author}
+                      </small>
+                      <p className="whitespace-break-spaces">{userMessage.message}</p>
+                      <small className="text-[0.7em] ml-auto -mb-0.5 mt-0.5 w-fit block">
+                        {userMessage.time}
+                      </small>
+                    </Linkify>
+                  </div>
+                  :
+                  null
+                }
               </>
             );
           }),
         )}
       </section>
-      <section className="flex items-center gap-4 max-w-[94%] sm:max-w-[98%] w-full mx-auto pb-2">
+      <section className="flex items-center gap-4 max-w-[99%] w-full mx-auto pb-2">
         {images.length > 0 ? (
           <>
             {images.map((image: string, index: number) => (
@@ -209,31 +257,37 @@ const Message = ({
                 >
                   X
                 </button>
-                <Image
-                  width={100}
-                  height={100}
-                  className="object-contain w-auto h-auto max-w-[60px] max-h-[60px] block"
-                  src={image}
-                  alt="anonymous image"
-                  unoptimized
-                  priority
-                />
+                {
+                  image.startsWith("data:image")?
+                  <Image
+                    width={100}
+                    height={100}
+                    className="object-contain w-auto h-auto max-w-[60px] max-h-[60px] block"
+                    src={image}
+                    alt="anonymous image"
+                    unoptimized
+                    priority
+                  />
+                  : image.startsWith("data:application/pdf")?
+                  <p className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-xl text-white" id={image}>PDF</p>
+                  :
+                  <p className="bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-xl text-white" id={image}>Archivo</p>
+                }
               </div>
             ))}
           </>
         ) : null}
       </section>
-      <section className="flex dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/30 dark:focus-within:border-white/30 rounded-lg max-w-[94%] sm:max-w-[98%] w-full mx-auto mb-3">
+      <section className="flex bg-white dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/20 dark:focus-within:border-white/20 rounded-2xl lg:rounded-3xl max-w-[99%] w-full mx-auto mb-3">
         <label
           htmlFor="file"
-          className="flex items-center bg-white dark:bg-slate-800 px-3 md:px-5 cursor-pointer"
+          className="flex items-center dark:bg-slate-800 px-5 lg:px-6 cursor-pointer"
         >
-          <ImageFile />
+          <FileIcon />
           <input
             id="file"
             multiple
             type="file"
-            accept="image/*"
             className="hidden"
             onChange={(e) => {
               e.target.files ? handleImages(e.target.files) : null;
@@ -241,7 +295,7 @@ const Message = ({
           />
         </label>
         <textarea
-          className="w-full py-1 resize-none outline-none dark:bg-white/10 indent-2 rounded-none border-l dark:border-white/5 min-h-[3.5em]"
+          className="bg-transparent w-full py-1 resize-none outline-none dark:bg-white/10 p-2 rounded-none border-l dark:border-white/5 min-h-[3.5em] lg:min-h-[4.5em]"
           ref={messageRef}
           placeholder="Aa"
           onKeyDown={(e) => {
@@ -249,10 +303,10 @@ const Message = ({
           }}
         />
         <button
-          className="text-white px-3 md:px-5 anonytalk md:text-lg"
+          className="text-white px-4 md:px-5 lg:px-6 anonytalk md:text-lg"
           onClick={sendMessage}
         >
-          Enviar
+          <SendIcon />
         </button>
       </section>
     </section>
