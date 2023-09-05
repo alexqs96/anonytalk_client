@@ -132,7 +132,7 @@ const Message = ({
           <button
             type="button"
             onClick={leaveRoom}
-            className="py-1.5 px-3 bg-white dark:bg-slate-700 text-white shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
+            className="py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
           >
             Salir
           </button>
