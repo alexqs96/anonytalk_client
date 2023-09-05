@@ -63,11 +63,11 @@ const Message = ({
     if (nick && room) {
       const messageData: MessageInterface = {
         id: socket.id,
-        room: room,
+        room: room.trim(),
         images,
-        author: nick,
+        author: nick.trim(),
         color,
-        message: messageRef?.current?.value || "",
+        message: (messageRef?.current?.value)?.trim() || "",
         time: new Date().toLocaleTimeString("es-ES", {
           hour: "numeric",
           minute: "numeric",
@@ -115,24 +115,23 @@ const Message = ({
 
   return (
     <section className="flex flex-col h-full reveal">
-      <nav className="max-w-[99%] mx-auto w-full flex items-center justify-between border border-black/5 dark:border-transparent bg-gradient-to-b from-white to-transparent dark:bg-gradient-to-b dark:from-slate-800 dark:to-transparent py-2 lg:py-3 px-[3%] sm:px-[1.25%] blurify lg:rounded-3xl lg:mt-2 overflow-hidden">
-        <a href="/" onClick={leaveRoom}>
-          <Anonytalk size={56} styles={null} />
+      <nav className="max-w-[99%] mx-auto w-full flex items-center justify-between bg-gradient-to-b from-white to-transparent dark:bg-gradient-to-b dark:from-slate-800 dark:to-transparent py-2 lg:py-3 px-[3%] sm:px-[1.25%] blurify lg:rounded-xl lg:mt-2 overflow-hidden">
+        <a href="/" onClick={leaveRoom} className="flex items-center gap-3">
+          <Anonytalk size={42} styles={null} />
+          <p className="max-md:hidden text-xl truncate max-w-xs">{room}</p>
         </a>
 
         <div className="flex gap-2 items-center max-sm:text-sm">
-          <div className="flex items-center gap-2 py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl border border-black/5 dark:border-white/5">
-          <p>Sala: {room}</p>
-          |
-          <p className="flex items-center gap-1"><MembersIcon />: {roomClients}</p>
-          </div>
           <div className="max-md:hidden">
             <DarkMode />
+          </div>
+          <div className="flex items-center py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl border border-black/5 dark:border-white/5">
+            <MembersIcon />: {roomClients}
           </div>
           <button
             type="button"
             onClick={leaveRoom}
-            className="py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
+            className="py-1.5 px-3 bg-white dark:bg-slate-700 shadow rounded-xl hover:bg-red-500 hover:text-white dark:hover:bg-red-500/50 border border-black/5 dark:border-white/5 pressable"
           >
             Salir
           </button>
@@ -278,10 +277,18 @@ const Message = ({
           </>
         ) : null}
       </section>
-      <section className="flex bg-white dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/20 dark:focus-within:border-white/20 rounded-2xl lg:rounded-3xl max-w-[99%] w-full mx-auto mb-3">
+      <section className="flex bg-[#f8f8f8] dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/20 dark:focus-within:border-white/20 rounded-xl max-w-[99%] w-full mx-auto mb-3">
+        <textarea
+          className="bg-transparent w-full resize-none outline-none dark:bg-white/10 py-2 pl-3.5 rounded-none border-l dark:border-white/5 min-h-[3.5em] lg:min-h-[4.5em]"
+          ref={messageRef}
+          placeholder="Aa"
+          onKeyDown={(e) => {
+            e.key === "Enter" && !e.shiftKey && sendMessage(e);
+          }}
+        />
         <label
           htmlFor="file"
-          className="flex items-center dark:bg-slate-800 px-5 lg:px-7 cursor-pointer"
+          className="flex items-center dark:bg-white/10 px-5 cursor-pointer"
         >
           <FileIcon />
           <input
@@ -294,14 +301,6 @@ const Message = ({
             }}
           />
         </label>
-        <textarea
-          className="bg-transparent w-full py-1 resize-none outline-none dark:bg-white/10 p-2 rounded-none border-l dark:border-white/5 min-h-[3.5em] lg:min-h-[4.5em]"
-          ref={messageRef}
-          placeholder="Aa"
-          onKeyDown={(e) => {
-            e.key === "Enter" && !e.shiftKey && sendMessage(e);
-          }}
-        />
         <button
           className="text-white px-4 md:px-5 lg:px-6 anonytalk md:text-lg"
           onClick={sendMessage}
