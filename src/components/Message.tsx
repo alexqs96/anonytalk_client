@@ -44,9 +44,6 @@ const Message = ({
 
       setImages([...images, ...bucket]);
     }
-    if (inputFile) {
-      inputFile.value = '' 
-    }
 
     return null;
   };
@@ -82,6 +79,11 @@ const Message = ({
       setMessageList((list) => [...list, messageData]);
       setImages([]);
       messageRef?.current?.value? messageRef.current.value = "" : null
+
+      if (inputFile) {
+        inputFile.value = '' 
+      }
+
     } else {
       location.reload();
     }
