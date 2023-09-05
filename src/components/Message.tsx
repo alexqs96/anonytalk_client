@@ -136,6 +136,7 @@ const Message = ({
                     }
                   >
                     {userMessage.images.map((image: string, index: number) => (
+                      <a href={image} target="_blank">
                       <Image
                         key={index}
                         width={200}
@@ -151,6 +152,7 @@ const Message = ({
                         unoptimized
                         priority
                       />
+                      </a>
                     ))}
                   </div>
                 ) : null}
@@ -246,7 +248,10 @@ const Message = ({
             e.key === "Enter" && !e.shiftKey && sendMessage(e);
           }}
         />
-        <button className="text-white px-3 md:px-5 anonytalk md:text-lg" onClick={sendMessage}>
+        <button
+          className="text-white px-3 md:px-5 anonytalk md:text-lg"
+          onClick={sendMessage}
+        >
           Enviar
         </button>
       </section>
