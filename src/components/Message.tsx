@@ -132,7 +132,7 @@ const Message = ({
           <button
             type="button"
             onClick={leaveRoom}
-            className="py-1.5 px-3 bg-red-500 text-white shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
+            className="py-1.5 px-3 bg-white dark:bg-slate-700 text-white shadow rounded-xl border border-black/5 dark:border-white/5 pressable"
           >
             Salir
           </button>
@@ -281,7 +281,7 @@ const Message = ({
       <section className="flex bg-white dark:bg-slate-800 border dark:border-white/5 overflow-hidden focus-within:border-black/20 dark:focus-within:border-white/20 rounded-2xl lg:rounded-3xl max-w-[99%] w-full mx-auto mb-3">
         <label
           htmlFor="file"
-          className="flex items-center dark:bg-slate-800 px-5 lg:px-6 cursor-pointer"
+          className="flex items-center dark:bg-slate-800 px-5 lg:px-7 cursor-pointer"
         >
           <FileIcon />
           <input
