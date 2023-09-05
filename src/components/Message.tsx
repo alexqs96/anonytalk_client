@@ -33,7 +33,7 @@ const Message = ({
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const [messageList, setMessageList] = useState<MessageInterface[]>([]);
   const lastMessage = useRef<HTMLParagraphElement>(null);
-
+  const inputFile = document.querySelector<HTMLInputElement>("#file")
   //Handles image conversion to base64
   const handleImages = async (e: any) => {
     if (e) {
@@ -44,6 +44,10 @@ const Message = ({
 
       setImages([...images, ...bucket]);
     }
+    if (inputFile) {
+      inputFile.value = '' 
+    }
+
     return null;
   };
 
