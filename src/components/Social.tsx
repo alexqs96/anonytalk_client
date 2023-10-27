@@ -1,4 +1,4 @@
-import { AlexDev, GithubLogo, LinkedinLogo } from "./Icons"
+import { AlexDev, GithubLogo, LinkedinLogo } from "./Icons";
 
 const Social = () => {
   return (
@@ -30,7 +30,7 @@ const Social = () => {
         <AlexDev />
       </a>
     </div>
-  )
-}
+  );
+};
 
-export default Social
+export default Social;
