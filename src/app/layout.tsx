@@ -1,13 +1,13 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import DarkModeProvider from '@/components/DarkMode'
-import { Varela_Round } from 'next/font/google'
+import "./globals.css";
+import type { Metadata } from "next";
+import DarkModeProvider from "@/components/DarkMode";
+import { Varela_Round } from "next/font/google";
 
-const varela = Varela_Round({ weight: ["400"], subsets: ["latin"] })
+const varela = Varela_Round({ weight: ["400"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Anonytalk: Chatea anonimamente :)',
-  description: 'Chatea anonimamente en grupo en anonytalk.',
+  title: "Anonytalk: Chatea anonimamente :)",
+  description: "Chatea anonimamente en grupo en anonytalk.",
   openGraph: {
     type: "website",
     url: "https://anonytalk.vercel.app",
@@ -16,22 +16,25 @@ export const metadata: Metadata = {
     description: "Chatea anonimamente en grupo en anonytalk.",
     images: "/img/og_image.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={varela.className + " bg-[#f8f8f8] dark:bg-slate-900 max-w-screen-2xl mx-auto"}>
+      <body
+        className={
+          varela.className +
+          " bg-[#f8f8f8] dark:bg-slate-900 max-w-screen-2xl mx-auto"
+        }
+      >
         <DarkModeProvider>
-        <main>
-        {children}
-        </main>
+          <main>{children}</main>
         </DarkModeProvider>
       </body>
     </html>
-  )
+  );
 }
