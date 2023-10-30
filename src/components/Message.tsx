@@ -33,8 +33,8 @@ const Message = ({
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const [messageList, setMessageList] = useState<MessageInterface[]>([]);
   const lastMessage = useRef<HTMLParagraphElement>(null);
-  const inputFile = document.querySelector<HTMLInputElement>("#file")
-  
+  const inputFile = document.querySelector<HTMLInputElement>("#file");
+
   //Handles image conversion to base64
   const handleImages = async (e: any) => {
     if (e) {
@@ -69,7 +69,7 @@ const Message = ({
         images,
         author: nick.trim(),
         color,
-        message: (messageRef?.current?.value)?.trim() || "",
+        message: messageRef?.current?.value?.trim() || "",
         time: new Date().toLocaleTimeString("es-ES", {
           hour: "numeric",
           minute: "numeric",
@@ -79,12 +79,11 @@ const Message = ({
       socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
       setImages([]);
-      messageRef?.current?.value? messageRef.current.value = "" : null
+      messageRef?.current?.value ? (messageRef.current.value = "") : null;
 
       if (inputFile) {
-        inputFile.value = '' 
+        inputFile.value = "";
       }
-
     } else {
       location.reload();
     }
@@ -98,9 +97,10 @@ const Message = ({
   const openFileTab = (data64file: string) => {
     const newTab = window.open();
     newTab?.document.write(
-        `<!DOCTYPE html><head><title>Anonytalk Documento</title></head><body><iframe style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" src="${data64file}"></body></html>`);
+      `<!DOCTYPE html><head><title>Anonytalk Documento</title></head><body><iframe style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" src="${data64file}"></body></html>`,
+    );
     newTab?.document.close();
-  }
+  };
 
   //Scroll to bottom every time someone sends a message
   useEffect(() => {
@@ -157,57 +157,83 @@ const Message = ({
                   <div
                     className={
                       "flex gap-5 flex-col -mb-1 " +
-                      (socket.id !== userMessage.id ? "ml-auto items-end" : "mr-auto items-start")
+                      (socket.id !== userMessage.id
+                        ? "ml-auto items-end"
+                        : "mr-auto items-start")
                     }
                   >
-                    {
-                      Children.toArray(
+                    {Children.toArray(
                       userMessage.images.map((image: string) => (
-                      <div className="flex flex-col gap-2">
-                      <p style={{backgroundColor: userMessage.color}} className={"w-fit py-0.5 px-2 rounded-xl text-shadow -mb-1 "+(socket.id === userMessage.id
-                        ? " text-white mr-auto"
-                        : " text-white ml-auto")}>@{userMessage.author} ~ <small>{userMessage.time}</small></p>
-                      {
-                        image.startsWith("data:image")?
-                        <Image
-                          onClick={() => openFileTab(image)}
-                          width={200}
-                          height={200}
-                          className={
-                            "object-contain cursor-pointer w-full h-full max-w-[128px] md:max-w-[256px] max-h-[128px] md:max-h-[256px] rounded-lg block mb-1 " +
-                            (socket.id !== userMessage.id
-                              ? "ml-auto rounded-br-none"
-                              : "mr-auto rounded-bl-none")
-                          }
-                          src={image}
-                          alt="anonymous image"
-                          unoptimized
-                          priority
-                        />
-                        :
-                        image.startsWith("data:application/pdf")?
-                        <div className="flex items-center gap-2">
-                        <p
-                          className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-md text-white"
-                          onClick={() => openFileTab(image)}
-                        >Ver PDF de @{userMessage.author}</p>
-                        <a href={image} className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white" download={userMessage.author+ "_archivo_"+generateUniqueCode()}>
-                          Descargar PDF
-                        </a>
+                        <div className="flex flex-col gap-2">
+                          <p
+                            style={{ backgroundColor: userMessage.color }}
+                            className={
+                              "w-fit py-0.5 px-2 rounded-xl text-shadow -mb-1 " +
+                              (socket.id === userMessage.id
+                                ? " text-white mr-auto"
+                                : " text-white ml-auto")
+                            }
+                          >
+                            @{userMessage.author} ~{" "}
+                            <small>{userMessage.time}</small>
+                          </p>
+                          {image.startsWith("data:image") ? (
+                            <Image
+                              onClick={() => openFileTab(image)}
+                              width={200}
+                              height={200}
+                              className={
+                                "object-contain cursor-pointer w-full h-full max-w-[128px] md:max-w-[256px] max-h-[128px] md:max-h-[256px] rounded-lg block mb-1 " +
+                                (socket.id !== userMessage.id
+                                  ? "ml-auto rounded-br-none"
+                                  : "mr-auto rounded-bl-none")
+                              }
+                              src={image}
+                              alt="anonymous image"
+                              unoptimized
+                              priority
+                            />
+                          ) : image.startsWith("data:application/pdf") ? (
+                            <div className="flex items-center gap-2">
+                              <p
+                                className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-md text-white"
+                                onClick={() => openFileTab(image)}
+                              >
+                                Ver PDF de @{userMessage.author}
+                              </p>
+                              <a
+                                href={image}
+                                className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white"
+                                download={
+                                  userMessage.author +
+                                  "_archivo_" +
+                                  generateUniqueCode()
+                                }
+                              >
+                                Descargar PDF
+                              </a>
+                            </div>
+                          ) : (
+                            <a
+                              href={image}
+                              className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white"
+                              download={
+                                userMessage.author +
+                                "_archivo_" +
+                                generateUniqueCode()
+                              }
+                            >
+                              Descargar Archivo de @{userMessage.author}
+                            </a>
+                          )}
                         </div>
-                        :
-                        <a href={image} className="w-fit bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-md text-white" download={userMessage.author+ "_archivo_"+generateUniqueCode()}>
-                          Descargar Archivo de @{userMessage.author}
-                        </a>
-                      }
-                      </div>
-                    )))}
+                      )),
+                    )}
                   </div>
                 ) : null}
-                {
-                  userMessage.message?
+                {userMessage.message ? (
                   <div
-                    style={{backgroundColor: userMessage.color}}
+                    style={{ backgroundColor: userMessage.color }}
                     className={
                       "w-fit py-2 px-3.5 rounded-2xl text-shadow " +
                       (userMessage.author === ""
@@ -220,7 +246,11 @@ const Message = ({
                     }
                   >
                     <Linkify
-                      componentDecorator={(decoratedHref, decoratedText, key) => (
+                      componentDecorator={(
+                        decoratedHref,
+                        decoratedText,
+                        key,
+                      ) => (
                         <a
                           target="blank"
                           rel="noreferrer noopener"
@@ -237,15 +267,15 @@ const Message = ({
                           ? ""
                           : "@" + userMessage.author}
                       </small>
-                      <p className="whitespace-break-spaces">{userMessage.message}</p>
+                      <p className="whitespace-break-spaces">
+                        {userMessage.message}
+                      </p>
                       <small className="text-[0.7em] ml-auto -mb-0.5 mt-0.5 w-fit block">
                         {userMessage.time}
                       </small>
                     </Linkify>
                   </div>
-                  :
-                  null
-                }
+                ) : null}
               </>
             );
           }),
@@ -263,8 +293,7 @@ const Message = ({
                 >
                   X
                 </button>
-                {
-                  image.startsWith("data:image")?
+                {image.startsWith("data:image") ? (
                   <Image
                     width={100}
                     height={100}
@@ -274,11 +303,21 @@ const Message = ({
                     unoptimized
                     priority
                   />
-                  : image.startsWith("data:application/pdf")?
-                  <p className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-xl text-white" id={image}>PDF</p>
-                  :
-                  <p className="bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-xl text-white" id={image}>Archivo</p>
-                }
+                ) : image.startsWith("data:application/pdf") ? (
+                  <p
+                    className="bg-gradient-to-t from-red-500 to-red-600 cursor-pointer py-1.5 px-3 rounded-xl text-white"
+                    id={image}
+                  >
+                    PDF
+                  </p>
+                ) : (
+                  <p
+                    className="bg-gradient-to-t from-blue-600 to-blue-500 cursor-pointer py-1.5 px-3 rounded-xl text-white"
+                    id={image}
+                  >
+                    Archivo
+                  </p>
+                )}
               </div>
             ))}
           </>
