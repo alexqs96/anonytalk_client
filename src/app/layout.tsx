@@ -8,6 +8,7 @@ const varela = Varela_Round({ weight: ["400"], subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Anonytalk: Chatea anonimamente :)",
   description: "Chatea anonimamente en grupo en anonytalk.",
+  metadataBase: new URL('https://anonytalk.vercel.app'),
   openGraph: {
     type: "website",
     url: "https://anonytalk.vercel.app",

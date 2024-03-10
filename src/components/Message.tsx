@@ -36,7 +36,7 @@ const Message = ({
   const inputFile = document.querySelector<HTMLInputElement>("#file");
 
   //Handles image conversion to base64
-  const handleImages = async (e: any) => {
+  const handleImages = async (e: FileList) => {
     if (e) {
       const bucket = [];
       for (let i = 0; i < e.length; i++) {
@@ -62,7 +62,7 @@ const Message = ({
       return null;
     }
 
-    if (nick && room) {
+    if (nick && room && socket.id) {
       const messageData: MessageInterface = {
         id: socket.id,
         room: room.trim(),
