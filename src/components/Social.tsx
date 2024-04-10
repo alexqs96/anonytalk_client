@@ -2,7 +2,7 @@ import { AlexDev, GithubLogo, LinkedinLogo } from "./Icons";
 
 const Social = () => {
   return (
-    <div className="flex items-center w-fit gap-1.5 reveal border border-black/5 bg-white shadow dark:bg-slate-700 dark:border-white/5 py-2 px-3 rounded-xl">
+    <div className="nav-items">
       <a
         href="https://github.com/alexqs96"
         target="_blank"

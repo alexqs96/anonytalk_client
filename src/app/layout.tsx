@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import DarkModeProvider from "@/components/DarkMode";
 import { Varela_Round } from "next/font/google";
 
 const varela = Varela_Round({ weight: ["400"], subsets: ["latin"] });
@@ -8,7 +7,7 @@ const varela = Varela_Round({ weight: ["400"], subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Anonytalk: Chatea anonimamente :)",
   description: "Chatea anonimamente en grupo en anonytalk.",
-  metadataBase: new URL('https://anonytalk.vercel.app'),
+  metadataBase: new URL("https://anonytalk.vercel.app"),
   openGraph: {
     type: "website",
     url: "https://anonytalk.vercel.app",
@@ -29,12 +28,10 @@ export default function RootLayout({
       <body
         className={
           varela.className +
-          " bg-[#f8f8f8] dark:bg-slate-900 max-w-screen-2xl mx-auto"
+          " bg-slate-50 dark:bg-zinc-900 max-w-screen-2xl mx-auto"
         }
       >
-        <DarkModeProvider>
-          <main>{children}</main>
-        </DarkModeProvider>
+        {children}
       </body>
     </html>
   );

@@ -2,95 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  background-image: url("/img/chat_pattern.png");
-  background-size: 10em 10em;
-  transition: background-color .2s ease-in-out;
-}
-
-html,body, main{
-  height: 100%;
-}
-
-input[type=color]::-webkit-color-swatch {
-  border: none;
-  border-radius: 50%;
-  padding: 0;
-}
-
-input[type=color]::-webkit-color-swatch-wrapper {
-  border: none;
-  border-radius: 50%;
-  padding: 0;
-}
-
-.text-shadow {
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
-.anonytalk{
-  background-image: linear-gradient(150deg, #29b0ff 15%, #1bcbd1 50%, #75fac8 99%);
-  background-size: 200% 200%;
-  animation: anonytalk 4s infinite;
-}
-
-.dark .anonytalk{
-  background-image: linear-gradient(150deg, #4db3ee 15%, #53d1a0 50%, #119864 99%);
-}
-
-@keyframes anonytalk {
-  0% {
-    background-position-x: 0%;
-  }
-
-  50% {
-    background-position-x: 100%;
-  }
-
-  100% {
-    background-position-x: 0%;
-  }
-}
-
-.blurify{
-  backdrop-filter: blur(3px);
-}
-
-.pressable{
-  transition: transform .2s cubic-bezier(0,0,.2,1);
-}
-
-.pressable:active{
-  animation: pressable 2s cubic-bezier(0,0,.2,1);
-}
-
-@keyframes pressable {
-  0% {
-    transform: scale(.98);
-  }
-
-  40% {
-    transform: scale(1.01);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-.reveal {
-  transition: all 0.65s cubic-bezier(0.52, 0.01, 0.16, 1), color 0.25s cubic-bezier(0.52, 0.01, 0.16, 1);
-  animation: reveal .5s cubic-bezier(0.52, 0.01, 0.16, 1);
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+:root {
+  --icon-shadow: rgba(0, 255, 157, 0.7);
 }
 
 *::-webkit-scrollbar {
@@ -101,7 +14,74 @@ input[type=color]::-webkit-color-swatch-wrapper {
   background-color: transparent;
 }
 
-*::-webkit-scrollbar-thumb{
-  border-radius: .5rem;
-  background-color: #75fac8;
+*::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: currentColor;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: currentColor transparent;
+}
+
+body {
+  background-image: url("/img/chat_pattern.webp");
+  background-size: 10em 10em;
+  transition: background-color 0.2s ease-in-out;
+}
+
+html,
+body,
+main {
+  height: 100%;
+}
+
+input[type="color"]::-webkit-color-swatch,
+input[type="color"]::-webkit-color-swatch-wrapper {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.text-shadow {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.blurify {
+  backdrop-filter: blur(3px);
+}
+
+@layer utilities {
+  .press {
+    @apply transition duration-200 active:scale-95;
+  }
+
+  .input {
+    @apply bg-gray-50 dark:bg-neutral-900 border ring-black/50 dark:ring-white/50 focus-within:ring-1 focus-within:ring-black/20 dark:focus-within:ring-white/20 focus-within:border-black/30 dark:focus-within:border-white/30 dark:border-white/10 outline-none transition duration-200;
+  }
+
+  .invalid {
+    @apply border-red-300 bg-red-50 focus-within:border-red-300 ring-red-300;
+  }
+
+  .nav-items {
+    @apply flex items-center w-fit gap-1.5 py-1.5 px-2.5 rounded-xl shadow border border-black/[2%] dark:border-white/10 bg-white/90 dark:bg-transparent backdrop-blur-md;
+  }
+
+  .icon-shadow {
+    position: relative;
+  }
+
+  .icon-shadow::after {
+    content: "";
+    background-color: var(--icon-shadow);
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    aspect-ratio: 1 / 1;
+    width: 60%;
+    border-radius: 100%;
+    filter: blur(120px);
+    z-index: -1;
+  }
 }

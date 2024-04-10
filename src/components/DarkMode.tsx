@@ -1,21 +1,12 @@
 "use client";
-import { ThemeProvider, useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
-export const DarkMode = () => {
+import { useTheme } from "next-themes";
+
+export default function DarkMode({ className }: { className?: string }) {
   const { setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
-    <div className="flex items-center w-fit gap-1.5 reveal border border-black/5 bg-white shadow dark:bg-slate-700 dark:border-white/5 py-2 px-3 rounded-xl">
+    <div className={"nav-items" + (className ? " " + className : "")}>
       <button
         onClick={() => setTheme("light")}
         aria-label="Boton de tema claro"
@@ -28,8 +19,8 @@ export const DarkMode = () => {
           strokeWidth="1.5"
           shapeRendering="geometricPrecision"
           viewBox="0 0 24 24"
-          height="20"
-          width="20"
+          height="100%"
+          width="1.2em"
           color="currentColor"
         >
           <title>Modo Claro</title>
@@ -49,8 +40,8 @@ export const DarkMode = () => {
           strokeWidth="1.5"
           shapeRendering="geometricPrecision"
           viewBox="0 0 24 24"
-          height="20"
-          width="20"
+          height="100%"
+          width="1.2em"
           color="currentColor"
         >
           <title>Modo Oscuro</title>
@@ -62,32 +53,16 @@ export const DarkMode = () => {
         aria-label="Boton de tema del sistema"
       >
         <svg
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.5"
-          shapeRendering="geometricPrecision"
-          viewBox="0 0 24 24"
-          height="20"
-          width="20"
-          color="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.15em"
+          height="100%"
+          viewBox="0 0 16 16"
+          fill="currentColor"
         >
           <title>Tema Automatico</title>
-          <rect width="20" height="14" x="2" y="3" rx="2" ry="2"></rect>
-          <path d="M8 21h8M12 17v4"></path>
+          <path d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4c0 .667.083 1.167.25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75c.167-.333.25-.833.25-1.5H2s-2 0-2-2V4zm1.398-.855a.758.758 0 0 0-.254.302A1.46 1.46 0 0 0 1 4.01V10c0 .325.078.502.145.602.07.105.17.188.302.254a1.464 1.464 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.758.758 0 0 0 .254-.302 1.464 1.464 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.757.757 0 0 0-.302-.254A1.46 1.46 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145z" />
         </svg>
       </button>
     </div>
   );
-};
-
-const DarkModeProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ThemeProvider attribute="class" defaultTheme="light">
-      {children}
-    </ThemeProvider>
-  );
-};
-
-export default DarkModeProvider;
+}
