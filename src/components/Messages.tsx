@@ -177,7 +177,7 @@ const Messages = ({ socket }: { socket: Socket }) => {
       </section>
 
       <section className="flex items-center gap-4 w-full mx-auto pb-2">
-        {files.length > 0 ? (
+        {files?.length > 0 ? (
           <>
             {files.map((file: string, index: number) => (
               <div
