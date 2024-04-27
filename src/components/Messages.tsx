@@ -144,7 +144,7 @@ const Messages = ({ socket }: { socket: Socket }) => {
               className="h-3.5 w-3.5 rounded-full overflow-hidden cursor-pointer border"
             />
           </div>
-          <DarkMode className="max-md:hidden shadow" />
+          <DarkMode className="max-md:hidden" />
 
           <div className="nav-items">
             <MembersIcon />
@@ -162,7 +162,7 @@ const Messages = ({ socket }: { socket: Socket }) => {
       </nav>
 
       <section
-        className="flex flex-col flex-1 gap-4 py-4 h-[90dvh] overflow-y-scroll scroll-smooth relative px-3"
+        className="flex flex-col flex-1 gap-2 py-4 h-[90dvh] overflow-y-scroll scroll-smooth relative px-3"
         ref={lastMessage}>
         {Children.toArray(
           messageList.map((userMessage: IMessage) => (
