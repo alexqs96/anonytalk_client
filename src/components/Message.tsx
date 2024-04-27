@@ -82,7 +82,7 @@ function Message({ data }: { data: IMessage & { socket: string } }) {
             ? " mx-auto"
             : data.socket === data.id
             ? " mr-auto rounded-tl-none"
-            : " ml-auto text-right rounded-tr-none")
+            : " ml-auto rounded-tr-none")
         }>
         <Linkify
           componentDecorator={(decoratedHref, decoratedText, key) => (
