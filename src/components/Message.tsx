@@ -13,7 +13,7 @@ function Content({ data }: { data: string[] }) {
   return (
     <>
       {Children.toArray(
-        data.map((file: string) => (
+        data?.map((file: string) => (
           <div className="my-2">
             {file.startsWith("data:image") ? (
               <Image
