@@ -1,8 +1,8 @@
 import { AlexDev, GithubLogo, LinkedinLogo } from "./Icons";
 
-const Social = () => {
+export default function Social({ className }: { className?: string }) {
   return (
-    <div className="nav-items">
+    <div className={"nav-items" + (className ? " " + className : "")}>
       <a
         href="https://github.com/alexqs96"
         target="_blank"
@@ -22,7 +22,7 @@ const Social = () => {
       </a>
 
       <a
-        href="https://alexdev.com.ar"
+        href="https://alexqs96.vercel.app"
         target="_blank"
         rel="noreferrer noopener"
         title="Portfolio"
@@ -33,4 +33,3 @@ const Social = () => {
   );
 };
 
-export default Social;

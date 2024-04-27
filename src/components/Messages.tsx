@@ -144,7 +144,7 @@ const Messages = ({ socket }: { socket: Socket }) => {
               className="h-3.5 w-3.5 rounded-full overflow-hidden cursor-pointer border"
             />
           </div>
-          <DarkMode className="max-md:hidden" />
+          <DarkMode className="max-md:hidden shadow" />
 
           <div className="nav-items">
             <MembersIcon />

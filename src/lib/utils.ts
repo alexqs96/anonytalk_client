@@ -72,7 +72,8 @@ export function adjustLuma(color: string) {
   return luma > 0.5 ? "black" : "white";
 }
 
-export function parseTime(time: Date){
+export function parseTime(timeVal: Date){
+  const time = new Date(timeVal)
   return {
     short: time.toLocaleString("es-AR", { timeZone: "America/Buenos_Aires", hour12: false, minute: "2-digit", hour: "2-digit" }),
     long: time.toLocaleString()

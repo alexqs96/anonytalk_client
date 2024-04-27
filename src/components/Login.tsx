@@ -4,12 +4,9 @@ import { Socket } from "socket.io-client";
 import { focusNextInput } from "@/lib/utils";
 import DarkMode from "./DarkMode";
 import Context from "@/context";
+import Social from "./Social";
 
-function Login({
-  socket,
-}: {
-  socket: Socket;
-}) {
+function Login({ socket }: { socket: Socket }) {
   const { user, setUser } = useContext(Context);
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -43,12 +40,10 @@ function Login({
 
         <form
           onSubmit={(e: ChangeEvent<HTMLFormElement>) => handleSubmit(e)}
-          className="relative z-10 space-y-2.5 p-8 text-xl rounded-2xl shadow-xl bg-white/90 dark:bg-transparent backdrop-blur-md border border-black/[2%] dark:border-white/10"
-        >
+          className="relative z-10 space-y-2.5 p-8 text-xl rounded-2xl shadow-xl bg-white/90 dark:bg-transparent backdrop-blur-md border border-black/[2%] dark:border-white/10">
           <label
             className="opacity-75 indent-1 flex flex-col relative"
-            htmlFor="nick"
-          >
+            htmlFor="nick">
             <span className="text-lg">Nick</span>
             <input
               id="nick"
@@ -67,13 +62,21 @@ function Login({
             />
             <input
               defaultValue={user.color}
-              onChange={(e) => setUser({ ...user, color: e.target.value, colorIcon: e.target.value })}
+              onChange={(e) =>
+                setUser({
+                  ...user,
+                  color: e.target.value,
+                  colorIcon: e.target.value,
+                })
+              }
               id="color"
               type="color"
               className="h-3.5 w-3.5 rounded-full overflow-hidden cursor-pointer border absolute bottom-4 right-3"
             />
           </label>
-          <label className="opacity-75 indent-1 flex flex-col" htmlFor="room">
+          <label
+            className="opacity-75 indent-1 flex flex-col"
+            htmlFor="room">
             <span className="text-lg">Sala</span>
             <input
               id="room"
@@ -94,18 +97,25 @@ function Login({
 
           <button
             className="text-white dark:text-black bg-black dark:bg-white flex items-center gap-1.5 shadow-lg text-base rounded-lg w-fit py-1.5 px-4 press font-medium"
-            type="submit"
-          >
+            type="submit">
             Chatear
             <SendIcon />
           </button>
         </form>
 
-        <DarkMode className="text-sm" />
+        <div className="flex items-center gap-5">
+          <DarkMode className="text-base shadow-xl" />
+          <Social className="text-base shadow-xl" />
+        </div>
       </section>
 
-      <div className="icon-shadow" style={{"--icon-shadow": user.colorIcon} as React.CSSProperties}>
-        <Anonytalk size={"50%"} className="max-md:w-[6em]" />
+      <div
+        className="icon-shadow"
+        style={{ "--icon-shadow": user.colorIcon } as React.CSSProperties}>
+        <Anonytalk
+          size={"50%"}
+          className="max-md:w-[6em]"
+        />
       </div>
     </section>
   );

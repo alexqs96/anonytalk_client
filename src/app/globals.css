@@ -65,7 +65,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
   }
 
   .nav-items {
-    @apply flex items-center w-fit gap-1.5 py-1.5 px-2.5 rounded-xl shadow border border-black/[2%] dark:border-white/10 bg-white/90 dark:bg-transparent backdrop-blur-md;
+    @apply flex items-center w-fit gap-1.5 py-1.5 px-2.5 rounded-xl border border-black/[2%] dark:border-white/10 bg-white/90 dark:bg-transparent backdrop-blur-md;
   }
 
   .icon-shadow {
